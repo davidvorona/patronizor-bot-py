@@ -50,13 +50,28 @@ async def ping(ctx):
 
 @bot.command()
 async def patronize(ctx, username: str):
+    # get randomized index of word and phrase
     patronizing_phrases = ['wow, look at you', 'how ya doin there', 'keep it up', "you'll get em next time", 'keep your chin up', 'thanks for that', 'thanks for the update']
     patronizing_words = ['sport', 'chief', 'bud', 'pal', 'champ', 'squirt', 'buster', 'big boy', 'big hoss', 'turbo', 'slugger']
-    phraseIndex = randrange(0, len(patronizing_phrases))
-    wordIndex = randrange(0, len(patronizing_words))
-    member_to_patronize = ctx.guild.get_member_named(username)
-    soul_crushing_text = '{0.mention}, {1} {2}'.format(member_to_patronize, patronizing_phrases[phraseIndex], patronizing_words[wordIndex])
+    phrase_index = randrange(0, len(patronizing_phrases))
+    word_index = randrange(0, len(patronizing_words))
 
+    # get member to patronize
+    mentions = ctx.message.mentions
+    # first check for username, then for mention
+    member_to_patronize = ctx.guild.get_member_named(username) or (mentions[0] if 0 < len(mentions) else None) or None
+    if member_to_patronize is None:
+        # patronize author if he fails to do this correctly
+        await ctx.send(ctx.author.mention + ' you gotta patronize someone, ' + patronizing_words[word_index])
+        return
+
+    # generate soul-crushing text and send to channel
+    soul_crushing_text = '{0.mention}, {1} {2}'.format(member_to_patronize, patronizing_phrases[phrase_index], patronizing_words[word_index])
     await ctx.send(soul_crushing_text)
+
+@patronize.error
+async def patronize_error(ctx, error):
+    if (isinstance(error, commands.MissingRequiredArgument)):
+        await ctx.send(ctx.author.mention + ' you gotta patronize someone, genius')
 
 bot.run(auth_token)
