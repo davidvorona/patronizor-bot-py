@@ -26,11 +26,12 @@ except FileNotFoundError:
 # Load words/phrases
 #
 
+# load default and user words
 words_storage = Storage('words.txt')
 default_words = {'sport', 'chief', 'bud', 'pal', 'champ', 'squirt', 'buster', 'big boy', 'big hoss', 'turbo', 'slugger'}
 stored_words = words_storage.read() or []
 words = default_words.union(stored_words)
-
+# load default and user phrases
 phrases_storage = Storage('phrases.txt')
 stored_phrases = phrases_storage.read() or []
 default_phrases = {
@@ -44,14 +45,14 @@ default_phrases = {
     'the important thing is you tried'
 }
 phrases = default_phrases.union(stored_phrases)
-
+# define default welcome phrases
 default_welcome_phrases = {
     'nice job finding us',
     'introduce yourself to the class',
     'how ya doin there',
     'wow, look at you'
 }
-
+# create structures for words/phrases
 thesaurus = Thesaurus(words, words_storage)
 phrasebook = Phrasebook(phrases, phrases_storage)
 welcome_phrasebook = Phrasebook(default_welcome_phrases)
@@ -61,10 +62,11 @@ welcome_phrasebook = Phrasebook(default_welcome_phrases)
 #
 
 description = "Treat others how you'd want them to be treated."
-
+# use default Discord intents
 intents = discord.Intents.default()
+# but ensure the 'members' intent is allowed
 intents.members = True
-
+# create bot with parameters
 bot = commands.Bot(command_prefix='!', description=description, intents=intents)
 
 #
@@ -85,6 +87,7 @@ async def on_member_join(member):
         welcome_phrasebook.get_random(),
         thesaurus.get_random()
     )
+    # assume first channel in list is 'main' channel (e.g. # general)
     FIRST_POS = 0
     main_channel = discord.utils.find(lambda c: c.position == FIRST_POS, member.guild.text_channels)
     await main_channel.send(soul_crushing_text)
@@ -102,21 +105,37 @@ async def on_message(message):
             await message.channel.send(message.author.mention + ' pong')
         # print words list in channel
         elif cmd == 'words':
-            words_text = thesaurus.print_all()
-            await message.channel.send(words_text)
+            # found this gem when looking up embeds:
+            # https://stackoverflow.com/questions/62390411/discord-py-discord-embed-from-dict-not-creating-an-embed-properly
+            words_embed = discord.Embed.from_dict(thesaurus.to_embed_dict())
+            print(words_embed.fields)
+            await message.channel.send(embed=words_embed)
         # print phrases list in channel
         elif cmd == 'phrases':
-            phrases_text = phrasebook.print_all()
-            await message.channel.send(phrases_text)
+            phrases_embed = discord.Embed.from_dict(phrasebook.to_embed_dict())
+            await message.channel.send(embed=phrases_embed)
         # add new word to thesaurus
         elif cmd == 'word':
             new_word_i = raw_text.index(cmd) + len(cmd) + 1
             new_word = raw_text[new_word_i:].strip()
             thesaurus.add(new_word)
+            success_embed = discord.Embed.from_dict({
+                'description': f"Patronizor has added **{new_word}** to its thesaurus"
+            })
+            await message.channel.send(embed=success_embed)
+        # add new phrase to phrasebook
+        elif cmd == 'phrase':
+            new_phrase_i = raw_text.index(cmd) + len(cmd) + 1
+            new_phrase = raw_text[new_phrase_i:].strip()
+            phrasebook.add(new_phrase)
+            success_embed = discord.Embed.from_dict({
+                'description': f"Patronizor has added **{new_phrase}** to its phrasebook"
+            })
+            await message.channel.send(embed=success_embed)
     # remove default Discord new member message
     if message.type == discord.MessageType.new_member:
         await message.channel.delete_messages([message])
-
+    # forward command to normal processing
     await bot.process_commands(message)
 
 #

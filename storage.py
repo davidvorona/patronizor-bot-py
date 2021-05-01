@@ -2,6 +2,12 @@ import os
 import json
 from config import *
 
+#
+# Storage acts as a data access object for data
+# stored at the provided file path. It defaults to
+# files in the data directory, but can be overridden
+# for unique file locations.
+#
 class Storage:
     @staticmethod
     def validate_data_dir(data_dir: str):
