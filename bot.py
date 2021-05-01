@@ -107,7 +107,6 @@ async def on_message(message):
             # found this gem when looking up embeds:
             # https://stackoverflow.com/questions/62390411/discord-py-discord-embed-from-dict-not-creating-an-embed-properly
             words_embed = discord.Embed.from_dict(thesaurus.to_embed_dict())
-            print(words_embed.fields)
             await message.channel.send(embed=words_embed)
         # print phrases list in channel
         elif cmd == 'phrases':
