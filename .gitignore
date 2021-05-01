@@ -1,3 +1,8 @@
+__pycache__/
+bot-env/
+*.pyc
+
+.vscode/
+
 auth.json
-.vscode
-bot-env
+data/
