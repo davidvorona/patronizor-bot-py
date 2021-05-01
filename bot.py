@@ -81,7 +81,7 @@ async def on_ready():
 async def on_member_join(member):
     print('member joined:', member)
     member_to_patronize = member
-    soul_crushing_text = '{0.mention}, {1} {2}'.format(
+    soul_crushing_text = '{0.mention} {1}, {2}'.format(
         member_to_patronize,
         welcome_phrasebook.get_random(),
         thesaurus.get_random()
