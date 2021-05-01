@@ -119,7 +119,7 @@ async def on_message(message):
             new_word = raw_text[new_word_i:].strip()
             thesaurus.add(new_word)
             success_embed = discord.Embed.from_dict({
-                'description': f"Patronizor has added **{new_word}** to its thesaurus"
+                'description': f'Patronizor has added **{new_word}** to its thesaurus'
             })
             await message.channel.send(embed=success_embed)
         # add new phrase to phrasebook
@@ -128,7 +128,7 @@ async def on_message(message):
             new_phrase = raw_text[new_phrase_i:].strip()
             phrasebook.add(new_phrase)
             success_embed = discord.Embed.from_dict({
-                'description': f"Patronizor has added **{new_phrase}** to its phrasebook"
+                'description': f'Patronizor has added **{new_phrase}** to its phrasebook'
             })
             await message.channel.send(embed=success_embed)
     # remove default Discord new member message
