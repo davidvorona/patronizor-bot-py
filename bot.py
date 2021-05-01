@@ -147,7 +147,8 @@ async def patronize(ctx, username: str):
     # get member to patronize
     mentions = ctx.message.mentions
     # first check for username, then for mention
-    member_to_patronize = ctx.guild.get_member_named(username) or (mentions[0] if 0 < len(mentions) else None) or None
+    member_by_name = discord.utils.find(lambda m: m.name.lower() == username.lower(), ctx.guild.members)
+    member_to_patronize = member_by_name or (mentions[0] if 0 < len(mentions) else None) or None
     if member_to_patronize is None:
         # patronize author if he fails to do this correctly
         await ctx.send(ctx.author.mention + ' you gotta patronize someone, ' + patronizing_word)
