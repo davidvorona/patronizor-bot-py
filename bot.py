@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from random import randrange
 from config import *
 from lexicon import * 
 from storage import Storage
