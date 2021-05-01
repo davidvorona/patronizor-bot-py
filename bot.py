@@ -40,13 +40,16 @@ async def on_member_join(member):
 async def on_message(message):
     print('message:', message.type, message.content)
 
+    # if bot is being mentioned
+    if bot.user.mentioned_in(message):
+        # basic health check
+        if message.content.endswith('ping'):
+            await message.channel.send(message.author.mention + ' pong')
+
     if message.type == discord.MessageType.new_member:
         await message.channel.delete_messages([message])
-    await bot.process_commands(message)
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send('pong')
+    await bot.process_commands(message)
 
 @bot.command()
 async def patronize(ctx, username: str):
