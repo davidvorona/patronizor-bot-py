@@ -36,7 +36,7 @@ class Storage:
             raise
         except json.decoder.JSONDecodeError:
             if os.stat(self.file_path).st_size > 0:
-                print('Warning: invalid data in ' + file.name)
+                print('Warning: invalid data in ' + self.file_path)
             pass
 
     def write(self, data: list = None):
