@@ -66,7 +66,7 @@ intents = discord.Intents.default()
 # but ensure the 'members' intent is allowed
 intents.members = True
 # create bot with parameters
-bot = commands.Bot(command_prefix='!', description=description, intents=intents)
+bot = commands.Bot(command_prefix='!', help_command=None, description=description, intents=intents)
 
 #
 # Implement common bot events
