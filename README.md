@@ -9,7 +9,7 @@ A Discord bot that treats people as they should be treated.
 1. Clone the app locally
 
 ```
-git clone https://github.com/davidvorona/patronizor-bot.git
+git clone https://github.com/davidvorona/patronizor-bot-py.git
 ```
 
 2. Install `discord.py` package
