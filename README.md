@@ -1,5 +1,7 @@
 # patronizor-bot
 
+**NOTE: The python version of this bot is deprecated, and will no longer be updated. Please refer to the [TypeScript rewrite](https://github.com/davidvorona/patronizor-bot) for the most up-to-date version with support for slash commands.**
+
 A Discord bot that treats people as they should be treated.
 
 ## Setup
